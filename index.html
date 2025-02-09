@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KERR Stock & Price</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #333;
+      padding-top: 60px;
+    }
+
+    /* Header Styling */
+    .header {
+      text-align: center;
+      padding: 20px;
+      background-color: #6200ea;
+      color: white;
+      font-size: 30px;
+      font-weight: bold;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    /* Search Box Styling - Left corner */
+    .search-box {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+    }
+
+    .search-box input {
+      padding: 12px 20px;
+      width: 250px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+      background-color: #ffffff;
+    }
+
+    .search-box input:focus {
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      margin: 20px 0;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 15px;
+      text-align: left;
+      border-bottom: 1px solid #e1e4e8;
+    }
+
+    th {
+      background-color: #6200ea;
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    td {
+      background-color: #ffffff;
+      color: #333;
+      border-radius: 8px; /* Rounded corners for table cells */
+      border: 1px solid skyblue; /* Sky blue border for each cell */
+    }
+
+    /* Center alignment for Stock, UOM, Regular Price, Minimum Price */
+    td.center-align {
+      text-align: center;
+    }
+
+    tr {
+      opacity: 0;
+      animation: fadeIn 0.6s forwards;
+    }
+
+    tr:nth-child(even) {
+      animation-delay: 0.3s;
+    }
+
+    tr:nth-child(odd) {
+      animation-delay: 0.6s;
+    }
+
+    /* Hover Effect */
+    tr:hover {
+      background-color: #f7f7f7;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* FadeIn Animation */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      th, td {
+        font-size: 14px;
+        padding: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      th, td {
+        font-size: 12px;
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header with Title -->
+  <div class="header">
+    KERR Stock & Price
+  </div>
+
+  <!-- Search Box (Positioned at the left corner) -->
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search by Item Code or Description...">
+  </div>
+
+  <!-- Table to display the items -->
+  <table id="itemTable">
+    <thead>
+      <tr>
+        <th>Item Code</th>
+        <th>Item Description</th>
+        <th>Stock</th>
+        <th>UOM</th>
+        <th>Regular Price</th>
+        <th>Minimum Price</th>
+      </tr>
+    </thead>
+    <tbody id="itemList">
+      <!-- Items will be dynamically populated here -->
+    </tbody>
+  </table>
+
+  <!-- JavaScript for Fetching Data and Search Functionality -->
+  <script>
+    const apiUrl = 'https://script.google.com/macros/s/AKfycby7CgvDQol0v-HS8jn_FSh0JuE8vYeCaItXGU5FVw1U6a2dj4bBXS-0pTJZKB_omvu-cg/exec';
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const itemList = document.getElementById('itemList');
+      const searchInput = document.getElementById('searchInput');
+
+      // Function to format prices with SAR after the value (decimal format)
+      function formatPrice(price) {
+        if (typeof price === 'number') {
+          return price.toFixed(2) + ' SAR'; // Format to two decimals
+        } else {
+          return '0.00 SAR'; // Return a default value if the price is invalid
+        }
+      }
+
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          renderItems(data);
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          alert('Failed to fetch data. Please try again later.');
+        });
+
+      function renderItems(items) {
+        itemList.innerHTML = ''; // Clear previous items
+        items.forEach(item => {
+          const row = document.createElement('tr');
+          
+          // Format the prices with SAR after the decimal
+          const formattedRegularPrice = formatPrice(item['Regular Price']);
+          const formattedMinimumPrice = formatPrice(item['Minimum Price']);
+          
+          // Add item data as table cells
+          row.innerHTML = `
+            <td>${item['Item Code']}</td>
+            <td>${item['Item Description']}</td>
+            <td class="center-align">${item['Stock']}</td>
+            <td class="center-align">${item['UOM']}</td>
+            <td class="center-align">${formattedRegularPrice}</td>
+            <td class="center-align">${formattedMinimumPrice}</td>
+          `;
+          itemList.appendChild(row);
+        });
+      }
+
+      // Search functionality
+      searchInput.addEventListener('input', () => {
+        const filter = searchInput.value.toLowerCase();
+        const rows = itemList.getElementsByTagName('tr');
+
+        Array.from(rows).forEach(row => {
+          const columns = row.getElementsByTagName('td');
+          let match = false;
+
+          // Check if any column contains the search query
+          Array.from(columns).forEach(column => {
+            if (column.textContent.toLowerCase().includes(filter)) {
+              match = true;
+            }
+          });
+
+          // Show or hide the row based on whether it matches the search
+          if (match) {
+            row.style.display = '';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
