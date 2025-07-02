@@ -176,7 +176,7 @@
         items.forEach(item => {
           const row = document.createElement('tr');
           const formattedSalesPrice = formatPrice(item['Sales Price']);
-          const formattedSpecialOffer = String(item['Special Offer'] || '').trim(); // ensure it's treated as text
+          const formattedSpecialOffer = String(item['Special Offer'] || '').trim(); // inspect available keys
 
           row.innerHTML = `
             <td>${item['Item Code']}</td>
