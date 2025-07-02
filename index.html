@@ -239,7 +239,7 @@ thead th {
 
       function formatPrice(value) {
         const price = parseFloat(value);
-        return isNaN(price) ? '0.00 SAR' : price.toFixed(2) + ' SAR';
+        return isNaN(price) ? '0.00 <img src="images/Saudi_Riyal_Symbol.png" alt="SAR" style="width: 1em; vertical-align: middle; margin-left: 2px;">' : price.toFixed(2) + '<img src="images/Saudi_Riyal_Symbol.png" alt="SAR" style="width: 10px; vertical-align: middle; margin-left: 4px;">';
       }
 
       function escapeHTML(str) {
