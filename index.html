@@ -174,13 +174,8 @@
       const searchInput = document.getElementById('searchInput');
       const loading = document.getElementById('loading');
 
-      function formatPrice(value) {
-        const price = parseFloat(value);
-        return isNaN(price) ? '0.00 SAR' : price.toFixed(2) + ' SAR';
-      }
-
       function escapeHTML(str) {
-        return String(str || '-').replace(/[&<>'"]/g, tag => ({
+        return String(str).replace(/[&<>'"]/g, tag => ({
           '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
         }[tag]));
       }
@@ -200,19 +195,14 @@
         itemList.innerHTML = '';
         items.forEach(item => {
           const row = document.createElement('tr');
-
-          const salesPrice = formatPrice(item['Sales Price']);
-          const specialOffer = escapeHTML(item['Special Offer'] || '');
-          const offerStyle = specialOffer ? 'style="color:red; font-weight:bold;"' : '';
-
+          
           row.innerHTML = `
-            <td>${escapeHTML(item['Item Code'])}</td>
-            <td>${escapeHTML(item['Item Description'])}</td>
-            <td class="center-align">${escapeHTML(item['Stock'])}</td>
-            <td class="center-align">${escapeHTML(item['UOM'])}</td>
-            <td class="center-align">${salesPrice}</td>
-            <td class="center-align" ${offerStyle}>${specialOffer || '-'}</td>
-          `;
+            <td>${escapeHTML(item['Item Code'] || '-')}</td>
+            <td>${escapeHTML(item['Item Description'] || '-')}</td>
+            <td class="center-align">${escapeHTML(item['Stock'] || '0')}</td>
+            <td class="center-align">${escapeHTML(item['UOM'] || '-')}</td>
+	          <td class="center-align">${escapeHTML(item['Sales Price'] || '0')}</td>
+	          <td class="center-align">${escapeHTML(item['Special Offer'] || '-')}</td>
           itemList.appendChild(row);
         });
       }
