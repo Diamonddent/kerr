@@ -31,7 +31,7 @@
       font-size: 32px;
       font-weight: 700;
       text-align: center;
-      padding: 8px 0;
+      padding: 6px 2px;
       box-shadow: 0 5px 15px rgba(76, 175, 80, 0.5);
       z-index: 100;
       border-bottom-left-radius: 15px;
@@ -40,8 +40,8 @@
 
     .search-box {
       position: fixed;
-      top: 12px;
-      left: 20px;
+      top: 8px;
+      left: 10px;
       z-index: 110;
     }
 
@@ -71,43 +71,44 @@
 
     #loading {
       text-align: center;
-      font-size: 18px;
-      padding: 10px 6px;
+      font-size: 16px;
+      padding-top: 8px;
       color: #4a7c4a;
       font-weight: 600;
-    }
-
+      letter-spacing: 4px;
+}
 .table-wrapper {
-  margin: 0 2px 2px;
+  margin: 8px 2px 1px;
   overflow: auto;
   max-height: 100vh;
   box-shadow: 0 6px 12px rgba(76, 175, 80, 0.15);
-  border-radius: 8px;
+  border-radius: 6px;
   background-color: #f9fff9;
-  padding: 2px;
+  padding: 1px;
 }
 
 thead th {
   position: sticky;
-  top: 48px;
-  z-index: 50;
+  top: 2px; /* Header (48px) + margin */
+  z-index: 60;
   background-color: #81c784;
   color: #1b3e1b;
   box-shadow: 0 3px 6px rgba(129, 199, 132, 0.5);
 }
 
 
+
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 2px 4px;
+      border-spacing: 3px 4px;
       min-width: 620px;
     }
 
     th, td {
       padding: 4px;
       font-weight: 500;
-      border-radius: 12px;
+      border-radius: 6px;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
       user-select: none;
     }
