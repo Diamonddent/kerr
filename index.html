@@ -81,7 +81,7 @@
       border: 1px solid skyblue; /* Sky blue border for each cell */
     }
 
-    /* Center alignment for Stock, UOM, Sales Price, Minimum Price */
+    /* Center alignment for Stock, UOM, Sales Price, Special Offer */
     td.center-align {
       text-align: center;
     }
@@ -155,7 +155,7 @@
         <th>Stock</th>
         <th>UOM</th>
         <th>Sales Price</th>
-        <th>Minimum Price</th>
+        <th>Special Offer</th>
       </tr>
     </thead>
     <tbody id="itemList">
@@ -197,7 +197,7 @@
           
           // Format the prices with SAR after the decimal
           const formattedSalesPrice = formatPrice(item['Sales Price']);
-          const formattedMinimumPrice = formatPrice(item['Minimum Price']);
+          const formattedMinimumPrice = formatPrice(item['Special Offer']);
           
           // Add item data as table cells
           row.innerHTML = `
