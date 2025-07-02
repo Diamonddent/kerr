@@ -2,120 +2,158 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>KERR Stock & Price</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>KERR Stock & Price - Spring Theme</title>
   <style>
+    /* Reset & font */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Roboto', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: #f3f4f6;
-      color: #333;
-      padding-top: 60px;
+      background-color: #e6f4ea; /* soft pastel green */
+      color: #2f4f4f; /* dark slate gray */
+      padding-top: 70px;
+      min-height: 100vh;
     }
 
     .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: #4caf50; /* fresh spring green */
+      color: #f0fff0; /* honeydew */
+      font-size: 32px;
+      font-weight: 700;
       text-align: center;
-      padding: 20px;
-      background-color: #6200ea;
-      color: white;
-      font-size: 30px;
-      font-weight: bold;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
+      padding: 22px 0;
+      box-shadow: 0 5px 15px rgba(76, 175, 80, 0.5);
+      z-index: 100;
+      border-bottom-left-radius: 15px;
+      border-bottom-right-radius: 15px;
     }
 
     .search-box {
       position: fixed;
-      top: 20px;
+      top: 25px;
       left: 20px;
-      z-index: 10;
+      z-index: 110;
     }
 
     .search-box input {
-      padding: 12px 20px;
-      width: 250px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+      padding: 14px 22px;
+      width: 270px;
+      border: 2px solid #a8d5a2; /* light green border */
+      border-radius: 25px;
       font-size: 16px;
       outline: none;
-      background-color: #ffffff;
-      transition: box-shadow 0.3s ease;
+      background-color: #f9fff9;
+      color: #2f4f4f;
+      box-shadow: 0 2px 5px rgba(120, 200, 120, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .search-box input::placeholder {
+      color: #88b888;
+      font-style: italic;
     }
 
     .search-box input:focus {
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+      border-color: #4caf50;
+      box-shadow: 0 0 12px 3px rgba(76, 175, 80, 0.5);
+      background-color: #eaffea;
     }
 
     #loading {
       text-align: center;
       font-size: 18px;
-      padding: 20px;
+      padding: 24px 10px;
+      color: #4a7c4a;
+      font-weight: 600;
     }
 
     .table-wrapper {
+      margin: 0 12px 40px;
       overflow-x: auto;
-      margin: 0 10px;
+      box-shadow: 0 6px 12px rgba(76, 175, 80, 0.15);
+      border-radius: 15px;
+      background-color: #f9fff9;
+      padding: 12px;
     }
 
     table {
       width: 100%;
       border-collapse: separate;
-      margin: 20px 0;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      min-width: 600px;
+      border-spacing: 0 8px;
+      min-width: 620px;
     }
 
     th, td {
-      padding: 15px;
+      padding: 16px 20px;
       text-align: left;
-      border-bottom: 1px solid #e1e4e8;
+      font-weight: 500;
+      border-radius: 12px;
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
     }
 
     th {
-      background-color: #6200ea;
-      color: #ffffff;
-      font-weight: bold;
+      background-color: #81c784; /* light spring green */
+      color: #1b3e1b;
+      box-shadow: 0 3px 6px rgba(129, 199, 132, 0.5);
+      border-bottom: none;
     }
 
     td {
       background-color: #ffffff;
-      color: #333;
-      border-radius: 8px;
-      border: 1px solid skyblue;
+      color: #2f4f4f;
+      border: 1.5px solid #a8d5a2;
+      text-align: center;
+      font-weight: 400;
+      box-shadow: inset 0 1px 3px #d0f0d0;
+    }
+
+    td:first-child,
+    th:first-child {
+      text-align: left;
     }
 
     td.center-align {
       text-align: center;
     }
 
-    tr {
+    tbody tr {
       opacity: 0;
-      animation: fadeIn 0.6s forwards;
+      animation: fadeIn 0.5s forwards;
+      animation-timing-function: ease-in-out;
+      cursor: default;
     }
 
-    tr:nth-child(even) {
-      animation-delay: 0.3s;
+    tbody tr:nth-child(even) td {
+      background-color: #f0f9f0;
     }
 
-    tr:nth-child(odd) {
-      animation-delay: 0.6s;
+    tbody tr:nth-child(odd) td {
+      background-color: #ffffff;
     }
 
-    tr:hover {
-      background-color: #f7f7f7;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    tbody tr:hover td {
+      background-color: #c8e6c9;
+      box-shadow: 0 8px 15px rgba(76, 175, 80, 0.25);
+      transform: translateY(-4px);
+      transition: all 0.3s ease;
+      color: #1b3e1b;
+      font-weight: 600;
     }
 
     @keyframes fadeIn {
       from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(15px);
       }
       to {
         opacity: 1;
@@ -125,15 +163,25 @@
 
     @media (max-width: 768px) {
       th, td {
+        padding: 12px 14px;
         font-size: 14px;
-        padding: 12px;
+      }
+
+      .search-box input {
+        width: 200px;
+        padding: 12px 18px;
       }
     }
 
     @media (max-width: 480px) {
       th, td {
+        padding: 10px 8px;
         font-size: 12px;
-        padding: 10px;
+      }
+
+      .search-box input {
+        width: 160px;
+        padding: 10px 14px;
       }
     }
   </style>
@@ -143,13 +191,13 @@
   <div class="header">KERR Stock & Price</div>
 
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Search by Item Code or Description...">
+    <input type="text" id="searchInput" placeholder="Search by Item Code or Description..." />
   </div>
 
   <div id="loading">Loading data...</div>
 
   <div class="table-wrapper">
-    <table id="itemTable">
+    <table id="itemTable" aria-label="Stock and price data">
       <thead>
         <tr>
           <th>Item Code</th>
@@ -202,7 +250,7 @@
           const row = document.createElement('tr');
           const formattedSalesPrice = formatPrice(item['Sales Price']);
           const formattedSpecialOffer = String(item['Special Offer'] || '').trim();
-          const offerStyle = formattedSpecialOffer ? 'style="color:red; font-weight:bold;"' : '';
+          const offerStyle = formattedSpecialOffer ? 'style="color:#388e3c; font-weight:bold;"' : '';
 
           row.innerHTML = `
             <td>${escapeHTML(item['Item Code'] || '-')}</td>
@@ -217,14 +265,34 @@
       }
 
       searchInput.addEventListener('input', () => {
-        const filter = searchInput.value.toLowerCase();
+        const filter = searchInput.value.trim().toLowerCase();
         const rows = itemList.getElementsByTagName('tr');
+        let visibleCount = 0;
 
         Array.from(rows).forEach(row => {
           const cells = row.getElementsByTagName('td');
           const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
-          row.style.display = rowText.includes(filter) ? '' : 'none';
+          if (rowText.includes(filter)) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
         });
+
+        if (visibleCount === 0) {
+          if (!document.getElementById('noResultsRow')) {
+            const noResultRow = document.createElement('tr');
+            noResultRow.id = 'noResultsRow';
+            noResultRow.innerHTML = `<td colspan="6" style="text-align:center; padding: 20px; color:#4caf50;">No matching items found.</td>`;
+            itemList.appendChild(noResultRow);
+          }
+        } else {
+          const noResultRow = document.getElementById('noResultsRow');
+          if (noResultRow) {
+            noResultRow.remove();
+          }
+        }
       });
     });
   </script>
