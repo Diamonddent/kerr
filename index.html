@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KERR Stock & Price</title>
   <style>
-    /* General Reset */
+    /* Reset & Fonts */
     * {
       margin: 0;
       padding: 0;
@@ -19,7 +19,6 @@
       padding-top: 60px;
     }
 
-    /* Header Styling */
     .header {
       text-align: center;
       padding: 20px;
@@ -31,7 +30,6 @@
       margin-bottom: 20px;
     }
 
-    /* Search Box Styling - Left corner */
     .search-box {
       position: fixed;
       top: 20px;
@@ -46,15 +44,14 @@
       border-radius: 5px;
       font-size: 16px;
       outline: none;
-      transition: box-shadow 0.3s ease;
       background-color: #ffffff;
+      transition: box-shadow 0.3s ease;
     }
 
     .search-box input:focus {
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
     }
 
-    /* Table Styling */
     table {
       width: 100%;
       border-collapse: separate;
@@ -77,11 +74,10 @@
     td {
       background-color: #ffffff;
       color: #333;
-      border-radius: 8px; /* Rounded corners for table cells */
-      border: 1px solid skyblue; /* Sky blue border for each cell */
+      border-radius: 8px;
+      border: 1px solid skyblue;
     }
 
-    /* Center alignment for Stock, UOM, Sales Price, Special Offer */
     td.center-align {
       text-align: center;
     }
@@ -99,14 +95,12 @@
       animation-delay: 0.6s;
     }
 
-    /* Hover Effect */
     tr:hover {
       background-color: #f7f7f7;
       transform: translateY(-3px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
-    /* FadeIn Animation */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -118,7 +112,6 @@
       }
     }
 
-    /* Responsive Design */
     @media (max-width: 768px) {
       th, td {
         font-size: 14px;
@@ -136,17 +129,12 @@
 </head>
 <body>
 
-  <!-- Header with Title -->
-  <div class="header">
-    KERR Stock & Price
-  </div>
+  <div class="header">KERR Stock & Price</div>
 
-  <!-- Search Box (Positioned at the left corner) -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="Search by Item Code or Description...">
   </div>
 
-  <!-- Table to display the items -->
   <table id="itemTable">
     <thead>
       <tr>
@@ -159,46 +147,37 @@
       </tr>
     </thead>
     <tbody id="itemList">
-      <!-- Items will be dynamically populated here -->
+      <!-- Data will be populated here -->
     </tbody>
   </table>
 
-  <!-- JavaScript for Fetching Data and Search Functionality -->
   <script>
     const apiUrl = 'https://script.google.com/macros/s/AKfycby7CgvDQol0v-HS8jn_FSh0JuE8vYeCaItXGU5FVw1U6a2dj4bBXS-0pTJZKB_omvu-cg/exec';
-    
+
     document.addEventListener('DOMContentLoaded', () => {
       const itemList = document.getElementById('itemList');
       const searchInput = document.getElementById('searchInput');
 
-      // Function to format prices with SAR after the value (decimal format)
-      function formatPrice(price) {
-        if (typeof price === 'number') {
-          return price.toFixed(2) + ' SAR'; // Format to two decimals
-        } else {
-          return '0.00 SAR'; // Return a default value if the price is invalid
-        }
+      function formatPrice(value) {
+        const price = parseFloat(value);
+        return isNaN(price) ? '0.00 SAR' : price.toFixed(2) + ' SAR';
       }
 
       fetch(apiUrl)
         .then(response => response.json())
-        .then(data => {
-          renderItems(data);
-        })
+        .then(data => renderItems(data))
         .catch(error => {
           console.error('Error fetching data:', error);
           alert('Failed to fetch data. Please try again later.');
         });
 
       function renderItems(items) {
-        itemList.innerHTML = ''; // Clear previous items
+        itemList.innerHTML = '';
         items.forEach(item => {
           const row = document.createElement('tr');
-          
-          // Format the prices with SAR after the decimal
           const formattedSalesPrice = formatPrice(item['Sales Price']);
-          
-          // Add item data as table cells
+          const formattedSpecialOffer = String(item['Special Offer'] || '').trim(); // ensure it's treated as text
+
           row.innerHTML = `
             <td>${item['Item Code']}</td>
             <td>${item['Item Description']}</td>
@@ -211,31 +190,18 @@
         });
       }
 
-      // Search functionality
       searchInput.addEventListener('input', () => {
         const filter = searchInput.value.toLowerCase();
         const rows = itemList.getElementsByTagName('tr');
 
         Array.from(rows).forEach(row => {
-          const columns = row.getElementsByTagName('td');
-          let match = false;
-
-          // Check if any column contains the search query
-          Array.from(columns).forEach(column => {
-            if (column.textContent.toLowerCase().includes(filter)) {
-              match = true;
-            }
-          });
-
-          // Show or hide the row based on whether it matches the search
-          if (match) {
-            row.style.display = '';
-          } else {
-            row.style.display = 'none';
-          }
+          const cells = row.getElementsByTagName('td');
+          const rowText = Array.from(cells).map(cell => cell.textContent.toLowerCase()).join(' ');
+          row.style.display = rowText.includes(filter) ? '' : 'none';
         });
       });
     });
   </script>
+
 </body>
 </html>
