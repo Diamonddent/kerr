@@ -180,7 +180,7 @@
       }
 
       function escapeHTML(str) {
-        return String(str).replace(/[&<>'"]/g, tag => ({
+        return String(str || '-').replace(/[&<>'"]/g, tag => ({
           '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
         }[tag]));
       }
@@ -200,17 +200,18 @@
         itemList.innerHTML = '';
         items.forEach(item => {
           const row = document.createElement('tr');
-          const formattedSalesPrice = formatPrice(item['Sales Price']);
-          const formattedSpecialOffer = String(item['Special Offer'] || '').trim();
-          const offerStyle = formattedSpecialOffer ? 'style="color:red; font-weight:bold;"' : '';
+
+          const salesPrice = formatPrice(item['Sales Price']);
+          const specialOffer = escapeHTML(item['Special Offer'] || '');
+          const offerStyle = specialOffer ? 'style="color:red; font-weight:bold;"' : '';
 
           row.innerHTML = `
-            <td>${escapeHTML(item['Item Code'] || '-')}</td>
-            <td>${escapeHTML(item['Item Description'] || '-')}</td>
-            <td class="center-align">${escapeHTML(item['Stock'] || '0')}</td>
-            <td class="center-align">${escapeHTML(item['UOM'] || '-')}</td>
-            <td class="center-align">${formattedSalesPrice}</td>
-            <td class="center-align" ${offerStyle}>${escapeHTML(formattedSpecialOffer)}</td>
+            <td>${escapeHTML(item['Item Code'])}</td>
+            <td>${escapeHTML(item['Item Description'])}</td>
+            <td class="center-align">${escapeHTML(item['Stock'])}</td>
+            <td class="center-align">${escapeHTML(item['UOM'])}</td>
+            <td class="center-align">${salesPrice}</td>
+            <td class="center-align" ${offerStyle}>${specialOffer || '-'}</td>
           `;
           itemList.appendChild(row);
         });
