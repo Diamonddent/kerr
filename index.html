@@ -197,7 +197,7 @@
           
           // Format the prices with SAR after the decimal
           const formattedSalesPrice = formatPrice(item['Sales Price']);
-          const formattedMinimumPrice = formatPrice(item['Special Offer']);
+          const formattedSpecialOffer = formatPrice(item['Special Offer']);
           
           // Add item data as table cells
           row.innerHTML = `
@@ -206,7 +206,7 @@
             <td class="center-align">${item['Stock']}</td>
             <td class="center-align">${item['UOM']}</td>
             <td class="center-align">${formattedSalesPrice}</td>
-            <td class="center-align">${formattedMinimumPrice}</td>
+            <td class="center-align">${formattedSpecialOffer}</td>
           `;
           itemList.appendChild(row);
         });
